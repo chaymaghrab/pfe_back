@@ -15,9 +15,8 @@ class CreateSeancesTable extends Migration
     {
         Schema::create('seances', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->dateTime('heuredeb');
-            $table->datetime('heurefin');
+            $table->string('datedeb');
+            $table->string('datefin');
             $table->string('type');
             $table->unsignedBigInteger('groupe_formation_id')->nullable();
             $table->foreign('groupe_formation_id')->references('id')->on('groupe_formations');

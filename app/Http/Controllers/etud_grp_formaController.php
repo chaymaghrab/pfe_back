@@ -123,5 +123,23 @@ class etud_grp_formaController extends Controller
         $etud_grp_forma->delete();
         return response()->json('ok');
     }
+
+    public function strore_tp_grp(Request $request)
+    {
+
+        $request->validate([
+            'grp_forma_id'=>'required',
+            'etudiant_id'=>'required',
+        ]);
+        $etud=etudiant::whereIn('id',$request['etudiant_id'])->get();
+    $f=groupe_formation::where('id',$request['grp_forma_id'])->first();
+
+
+        foreach($etud as $key => $value)
+        {
+            $value->groupe_formations()->attach($f);
+        }
+        return response()->json($etud);
+    }
 }
 

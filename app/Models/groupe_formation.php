@@ -10,7 +10,7 @@ class groupe_formation extends Model
     use HasFactory;
     protected $table = 'groupe_formations';
     protected $fillable = [
-        'nom_groupe_forma','certification_id','local_id','formateur_id','cours','langue'
+        'nom_groupe_forma','certification_id','local_id','formateur_id','cours','langue','effectif'
 
     ];
 

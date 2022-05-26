@@ -20,9 +20,8 @@ class etudiantController extends Controller
      */
     public function index()
     {
-        $e= etudiant::with('User')->first();
-        $etudiant= $e->all();
-        return response()->json($etudiant);
+        $e= etudiant::all();
+        return response()->json($e);
 
     }
 

@@ -47,7 +47,7 @@ class localController extends Controller
             'type'=>'required',
 
         ]);
-        $local_identique=local::where('nom', $request->nom)->first();
+        $local_identique=local::where('nom', $request['nom'])->first();
         if($local_identique==null)
         {
             local::create($request->all());

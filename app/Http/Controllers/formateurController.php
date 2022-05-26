@@ -17,9 +17,8 @@ class formateurController extends Controller
      */
     public function index()
     {
-        $form= formateur::with('User')->first();
-        $forma_all= $form->all();
-        return response()->json($forma_all);
+        $form= formateur::all();
+        return response()->json($form);
     }
 
     /**

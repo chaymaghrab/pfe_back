@@ -44,10 +44,14 @@ use Illuminate\Support\Facades\Route;
         Route::post('groupe_forma/add',[\App\Http\Controllers\groupe_formationController::class,'store']);
         Route::put('groupe_forma/{id}/update',[\App\Http\Controllers\groupe_formationController::class,'update']);
         Route::delete('groupe_forma/{id}/delete',[\App\Http\Controllers\groupe_formationController::class,'destroy']);
-        Route::get('groupe_forma/filtre',[\App\Http\Controllers\groupe_formationController::class,'recherche_grp_classe']);
+        Route::get('groupe_forma/grp_classe',[\App\Http\Controllers\groupe_formationController::class,'recherche_grp_classe']);
+        Route::get('groupe_forma/{id}/etudiant',[\App\Http\Controllers\groupe_formationController::class,'get_etudinat']);
         Route::get('groupe_forma/{id}/get_sous_groupe',[\App\Http\Controllers\groupe_formationController::class,'get_sous_groupe']);
+        Route::get('groupe_forma/filtre',[\App\Http\Controllers\groupe_formationController::class,'get_grp_forma_filtre']);
+        Route::get('groupe_forma/{id}/bylocal',[\App\Http\Controllers\groupe_formationController::class,'get_forma_bylocal']);
 
-                /*******************  certification route   **************************/
+
+/*******************  certification route   **************************/
 
         Route::get('certifs',[\App\Http\Controllers\certificationController::class,'index']);
         Route::get('certif/{id}/find',[\App\Http\Controllers\certificationController::class,'show']);
@@ -81,6 +85,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('etud_grp_formas',[\App\Http\Controllers\etud_grp_formaController::class,'index']);
         Route::get('etud_grp_forma/{id}/find',[\App\Http\Controllers\etud_grp_formaController::class,'show']);
         Route::post('etud_grp_forma/add',[\App\Http\Controllers\etud_grp_formaController::class,'store']);
+        Route::post('etud_grp_forma/tp/add',[\App\Http\Controllers\etud_grp_formaController::class,'strore_tp_grp']);
         Route::put('etud_grp_forma/{id}/update',[\App\Http\Controllers\etud_grp_formaController::class,'update']);
         Route::delete('etud_grp_forma/{id}/delete',[\App\Http\Controllers\etud_grp_formaController::class,'destroy']);
 
@@ -123,16 +128,19 @@ use Illuminate\Support\Facades\Route;
         Route::delete('grp_classe_cetif/{id}/delete',[\App\Http\Controllers\grp_classe_certifController::class,'destroy']);
         Route::get('grp_classe_cetif/{id_groupe}/get_certifs',[\App\Http\Controllers\grp_classe_certifController::class,'get_all_certifs']);
         Route::post('grp_classe_cetif/{id_groupe}/{id_certif}/affecter/',[\App\Http\Controllers\grp_classe_certifController::class,'affecter_certif']);
-                    /******************  seance route   **************************/
+
+                        /******************  seance route   **************************/
 
         Route::get('seances',[\App\Http\Controllers\seanceController::class,'index']);
         Route::get('seance/{id}/find',[\App\Http\Controllers\seanceController::class,'show']);
         Route::post('seance/add',[\App\Http\Controllers\seanceController::class,'store']);
         Route::put('seance/{id}/update',[\App\Http\Controllers\seanceController::class,'update']);
         Route::delete('seance/{id}/delete',[\App\Http\Controllers\seanceController::class,'destroy']);
+        Route::get('seance/{id}/find_bygrp_forma',[\App\Http\Controllers\seanceController::class,'find_bygrp_forma']);
+        Route::get('seance/find_bylist_grp_forma',[\App\Http\Controllers\seanceController::class,'find_list_bygrp_forma']);
 
 
-                /******************  surveillant route   **************************/
+/******************  surveillant route   **************************/
 
 
         Route::get('surveillants',[\App\Http\Controllers\surveillantController::class,'index']);

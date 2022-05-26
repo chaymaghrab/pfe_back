@@ -10,10 +10,10 @@ class seance extends Model
     use HasFactory;
     protected $table = 'seances';
     protected $fillable = [
-        'date',
-        'heuredeb',
-        'heurefin',
-        'type_senace',
+        'datedeb',
+        'datefin',
+        'type',
+        'groupe_formation_id',
     ];
 
 

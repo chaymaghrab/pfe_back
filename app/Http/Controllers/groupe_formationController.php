@@ -48,6 +48,7 @@ class groupe_formationController extends Controller
             'certification_id'=>'required',
             'langue'=>'required',
             'cours'=>'required',
+            'effectif'=>'required',
 
         ]);
         $f=groupe_formation::create($request->all());
@@ -127,7 +128,7 @@ class groupe_formationController extends Controller
     {
        $grp_classes = new groupe_classeController();
         $grp_classes_ids=grp_classe_certif::select('grp_classe_id')
-                                            ->where('certif_id',$request['certif_id'])->get();
+                                            ->where('certif_id',$request['certification_id'])->get();
 $g=$grp_classes->shows($grp_classes_ids,$request['cours'],$request['langue'],$request['ecole']);
 
         return ($g);
@@ -149,12 +150,37 @@ $g=$grp_classes->shows($grp_classes_ids,$request['cours'],$request['langue'],$re
        // $grp_classes=groupe_classe::where('id',$grp_class_id)->get();
         //return $grp_class_id;
     }
+
+    public function get_etudinat($id)
+    {
+        $e=etud_grp_forma::select('etudiant_id')
+            ->where('grp_forma_id',$id)->get();
+
+        $etudiant=etudiant::whereIn('id',  $e)->get();
+
+        return   ($etudiant);
+
+
+    }
+
+
+
+
+
    public function get_grp_forma_filtre(Request $request)
     {
-        $g=groupe_formation::select('id')->where('certification_id',$request['certification_id'])->get();
-        $e=etud_grp_forma::select('etudiant_id')
-            ->whereIn('grp_forma_id',$g)->get();
-        $grp_class_id=etudiant::select('grp_classe_id')
-            ->whereIn('id',  $e)->distinct()->get();
+        $g=groupe_formation::where('certification_id',$request['certification_id'])
+                                        ->where('langue',$request['langue'])
+                                        ->where('cours',$request['cours'])->get();
+        return response()->json($g);
+
     }
+
+    public function get_forma_bylocal($local_id)
+    {
+        $g_forma=groupe_formation::where('local_id',$local_id)->get();
+        return response()->json($g_forma);
+    }
+
+
 }

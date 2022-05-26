@@ -18,6 +18,7 @@ class CreateGroupeFormationsTable extends Migration
             $table->string('nom_groupe_forma');
             $table->string('langue');
             $table->string('cours');
+            $table->integer('effectif');
             $table->unsignedBigInteger('formateur_id')->nullable();
             $table->foreign('formateur_id')->references('id')->on('formateurs');
             $table->unsignedBigInteger('certification_id')->nullable();
