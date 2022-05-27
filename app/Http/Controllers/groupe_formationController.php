@@ -182,5 +182,11 @@ $g=$grp_classes->shows($grp_classes_ids,$request['cours'],$request['langue'],$re
         return response()->json($g_forma);
     }
 
+    public function get_forma_byformateur($formateur_id)
+    {
+        $g_forma=groupe_formation::where('formateur_id',$formateur_id)->get();
+        return response()->json($g_forma);
+    }
+
 
 }

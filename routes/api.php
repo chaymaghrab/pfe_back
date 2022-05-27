@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('groupe_forma/{id}/get_sous_groupe',[\App\Http\Controllers\groupe_formationController::class,'get_sous_groupe']);
         Route::get('groupe_forma/filtre',[\App\Http\Controllers\groupe_formationController::class,'get_grp_forma_filtre']);
         Route::get('groupe_forma/{id}/bylocal',[\App\Http\Controllers\groupe_formationController::class,'get_forma_bylocal']);
+Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formationController::class,'get_forma_byformateur']);
 
 
 /*******************  certification route   **************************/
@@ -117,9 +118,12 @@ use Illuminate\Support\Facades\Route;
         Route::delete('grp_classe/{id}/delete',[\App\Http\Controllers\groupe_classeController::class,'destroy']);
         Route::get('grp_classe/cours',[\App\Http\Controllers\groupe_classeController::class,'get_type_cours']);
         Route::get('grp_classe/ecoles',[\App\Http\Controllers\groupe_classeController::class,'get_ecole']);
+        Route::get('grp_classe/bydepartement',[\App\Http\Controllers\groupe_classeController::class,'get_grp_bydepartement']);
+        Route::get('grp_classe/{dep}/bydepartement_niveau',[\App\Http\Controllers\groupe_classeController::class,'get_niveau_department']);
+        Route::get('grp_classe/{dep}/{niv}/getecole',[\App\Http\Controllers\groupe_classeController::class,'get_grp_byecole']);
 
 
-            /******************  groupe classe_certification route   **************************/
+/******************  groupe classe_certification route   **************************/
 
         Route::get('grp_classe_cetifs',[\App\Http\Controllers\grp_classe_certifController::class,'index']);
         Route::get('grp_classe_cetif/{id}/find',[\App\Http\Controllers\grp_classe_certifController::class,'show']);
@@ -138,6 +142,7 @@ use Illuminate\Support\Facades\Route;
         Route::delete('seance/{id}/delete',[\App\Http\Controllers\seanceController::class,'destroy']);
         Route::get('seance/{id}/find_bygrp_forma',[\App\Http\Controllers\seanceController::class,'find_bygrp_forma']);
         Route::get('seance/find_bylist_grp_forma',[\App\Http\Controllers\seanceController::class,'find_list_bygrp_forma']);
+Route::get('seance/find_bylist_formateur_forma',[\App\Http\Controllers\seanceController::class,'find_list_by_formateur']);
 
 
 /******************  surveillant route   **************************/

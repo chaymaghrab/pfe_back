@@ -142,6 +142,22 @@ public function get_ecole()
 }
 
 
+    public function get_grp_bydepartement(Request $request)
+    {
+        return groupe_classe::select('departement')->distinct()->get();
+    }
+
+    public function get_niveau_department($depatement)
+    {
+        return groupe_classe::select('niveau')->where('departement',$depatement)->distinct()->get();
+    }
+
+    public function get_grp_byecole($depatement,$niveau)
+    {
+        return groupe_classe::select('ecole')->where('departement',$depatement)
+                                ->where('niveau',$niveau)->distinct()->get();
+    }
+
 
     //find groupe classe by id , cours and langue
     public function shows( Collection $id , $cours , $langue, $ecole)

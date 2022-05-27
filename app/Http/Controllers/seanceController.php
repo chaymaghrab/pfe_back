@@ -129,4 +129,10 @@ class seanceController extends Controller
         return response()->json($seance);
 
     }
+
+    public function  find_list_by_formateur(Request $request)
+    {
+        $seance=seance::whereIn('groupe_formation_id',$request)->get();
+        return response()->json($seance);
+    }
 }
