@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\etud_grp_certif;
+use App\Models\etudiant;
+use App\Models\groupe_certification;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -38,12 +40,22 @@ class etud_grp_certifController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        
+         $request->validate([
             'etudiant_id'=>'required',
             'grp_certif_id'=>'required',
         ]);
-        etud_grp_certif::create($request->all());
-        return response()->json('ok');
+       
+        $etud=etudiant::select('id')
+        ->whereIn('id',$request['etudiant_id'])->get();
+    $f=groupe_certification::where('id',$request['grp_certif_id'])->first();
+
+   foreach($etud as $key => $value)
+    {
+        $value->groupe_certifications()->attach($f);
+    }
+    return response()->json('ok');
+
 
     }
 

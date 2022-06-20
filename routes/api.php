@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Route;
         Route::put('local/{id}/update',[\App\Http\Controllers\localController::class,'update']);
         Route::delete('local/{id}/delete',[\App\Http\Controllers\localController::class,'destroy']);
         Route::post('local/import',[\App\Http\Controllers\localController::class,'import']);
+        Route::get('local/{type}/type',[\App\Http\Controllers\localController::class,'get_loc_bytype']);
+        Route::get('local/{type}/{l}/type_langue',[\App\Http\Controllers\localController::class,'getloc_langue_type']);
 
                 /***************  groupe certifications route   **************************/
 
@@ -36,8 +38,13 @@ use Illuminate\Support\Facades\Route;
         Route::post('groupe_certif/add',[\App\Http\Controllers\groupe_certificationController::class,'store']);
         Route::put('groupe_certif/{id}/update',[\App\Http\Controllers\groupe_certificationController::class,'update']);
         Route::delete('groupe_certif/{id}/delete',[\App\Http\Controllers\groupe_certificationController::class,'destroy']);
+        Route::get('groupe_certif/filtre',[\App\Http\Controllers\groupe_certificationController::class,'get_grp_certif_filtre']);
+        Route::get('groupe_certif/{id}/etudiant',[\App\Http\Controllers\groupe_certificationController::class,'get_etudinat']);
+        Route::get('groupe_certif/{id}/bylocal',[\App\Http\Controllers\groupe_certificationController::class,'get_certif_bylocal']);
+        Route::get('groupe_certif/{id}/bysurveillant',[\App\Http\Controllers\groupe_certificationController::class,'get_certif_byfsurv']);
 
-                /******************  groupe formation route   **************************/
+
+                  /******************  groupe formation route   **************************/
 
         Route::get('groupe_formas',[\App\Http\Controllers\groupe_formationController::class,'index']);
         Route::get('groupe_forma/{id}/find',[\App\Http\Controllers\groupe_formationController::class,'show']);
@@ -49,10 +56,11 @@ use Illuminate\Support\Facades\Route;
         Route::get('groupe_forma/{id}/get_sous_groupe',[\App\Http\Controllers\groupe_formationController::class,'get_sous_groupe']);
         Route::get('groupe_forma/filtre',[\App\Http\Controllers\groupe_formationController::class,'get_grp_forma_filtre']);
         Route::get('groupe_forma/{id}/bylocal',[\App\Http\Controllers\groupe_formationController::class,'get_forma_bylocal']);
-Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formationController::class,'get_forma_byformateur']);
+        Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formationController::class,'get_forma_byformateur']);
+        Route::get('groupe_forma/grp_classe_certif',[\App\Http\Controllers\groupe_formationController::class,'recherche_grp_classe_certif']);
 
 
-/*******************  certification route   **************************/
+                /*******************  certification route   **************************/
 
         Route::get('certifs',[\App\Http\Controllers\certificationController::class,'index']);
         Route::get('certif/{id}/find',[\App\Http\Controllers\certificationController::class,'show']);
@@ -64,7 +72,7 @@ Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formati
 
 
 
-/******************  conseiller route   **************************/
+                        /******************  conseiller route   **************************/
 
        Route::get('conseillers',[\App\Http\Controllers\conseillerController::class,'index']);
        Route::get('conseiller/{id}/find',[\App\Http\Controllers\conseillerController::class,'show']);
@@ -121,6 +129,9 @@ Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formati
         Route::get('grp_classe/bydepartement',[\App\Http\Controllers\groupe_classeController::class,'get_grp_bydepartement']);
         Route::get('grp_classe/{dep}/bydepartement_niveau',[\App\Http\Controllers\groupe_classeController::class,'get_niveau_department']);
         Route::get('grp_classe/{dep}/{niv}/getecole',[\App\Http\Controllers\groupe_classeController::class,'get_grp_byecole']);
+        Route::get('grp_classe/get_grp_filtre',[\App\Http\Controllers\groupe_classeController::class,'get_grp_by_dep_niv_ecole']);
+        Route::get('grp_classe/get_grp_distinct',[\App\Http\Controllers\groupe_classeController::class,'getdisctinct']);
+        Route::get('grp_classe/{certif_id}/get_grpaff_distinct',[\App\Http\Controllers\groupe_classeController::class,'get_grpaff_disctinct']);
 
 
 /******************  groupe classe_certification route   **************************/
@@ -130,9 +141,11 @@ Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formati
         Route::post('grp_classe_cetif/add',[\App\Http\Controllers\grp_classe_certifController::class,'store']);
         Route::put('grp_classe_cetif/{id}/update',[\App\Http\Controllers\grp_classe_certifController::class,'update']);
         Route::delete('grp_classe_cetif/{id}/delete',[\App\Http\Controllers\grp_classe_certifController::class,'destroy']);
-        Route::get('grp_classe_cetif/{id_groupe}/get_certifs',[\App\Http\Controllers\grp_classe_certifController::class,'get_all_certifs']);
+        Route::get('grp_classe_cetif/{id_groupe}/{id_certif}/isaffected',[\App\Http\Controllers\grp_classe_certifController::class,'get_all_certifs']);
         Route::post('grp_classe_cetif/{id_groupe}/{id_certif}/affecter/',[\App\Http\Controllers\grp_classe_certifController::class,'affecter_certif']);
-
+        Route::get('grp_classe_cetif/{certifid}/getgrp_certif',[\App\Http\Controllers\grp_classe_certifController::class,'getgrp_bycertif_id']);
+        Route::get('grp_classe_cetif/get_grp_certif_distinct',[\App\Http\Controllers\grp_classe_certifController::class,'get_grp_certif_distinct']);
+        Route::post('grp_classe_cetif/import',[\App\Http\Controllers\grp_classe_certifController::class,'import']);
                         /******************  seance route   **************************/
 
         Route::get('seances',[\App\Http\Controllers\seanceController::class,'index']);
@@ -142,10 +155,10 @@ Route::get('groupe_forma/{id}/byformateur',[\App\Http\Controllers\groupe_formati
         Route::delete('seance/{id}/delete',[\App\Http\Controllers\seanceController::class,'destroy']);
         Route::get('seance/{id}/find_bygrp_forma',[\App\Http\Controllers\seanceController::class,'find_bygrp_forma']);
         Route::get('seance/find_bylist_grp_forma',[\App\Http\Controllers\seanceController::class,'find_list_bygrp_forma']);
-Route::get('seance/find_bylist_formateur_forma',[\App\Http\Controllers\seanceController::class,'find_list_by_formateur']);
+        Route::get('seance/find_bylist_formateur_forma',[\App\Http\Controllers\seanceController::class,'find_list_by_formateur']);
 
 
-/******************  surveillant route   **************************/
+                        /******************  surveillant route   **************************/
 
 
         Route::get('surveillants',[\App\Http\Controllers\surveillantController::class,'index']);
@@ -155,7 +168,10 @@ Route::get('seance/find_bylist_formateur_forma',[\App\Http\Controllers\seanceCon
         Route::delete('surveillant/{id}/delete',[\App\Http\Controllers\surveillantController::class,'destroy']);
 
 
+   /******************  etudiant certif route   **************************/
 
+
+   Route::get('etud_certifs',[\App\Http\Controllers\etud_certifController::class,'index']);
 
 
 

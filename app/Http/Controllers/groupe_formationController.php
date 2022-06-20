@@ -134,6 +134,17 @@ $g=$grp_classes->shows($grp_classes_ids,$request['cours'],$request['langue'],$re
         return ($g);
     }
 
+    public function recherche_grp_classe_certif(Request $request)
+    {
+        $grp_classes = new groupe_classeController();
+        $grp_classes_ids=grp_classe_certif::select('grp_classe_id')
+            ->where('certif_id',$request['certification_id'])->get();
+        $g=$grp_classes->shows($grp_classes_ids,$request['cours'],$request['langue'],$request['ecole']);
+
+        return ($g);
+    }
+
+
 
 
     public function get_sous_groupe($id)

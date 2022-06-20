@@ -138,5 +138,6 @@ class etudiantController extends Controller
             return $e->getMessage();
         }
     }
+    
 }
 

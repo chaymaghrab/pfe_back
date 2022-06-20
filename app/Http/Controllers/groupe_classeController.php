@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\certification;
 use App\Models\groupe_classe;
+use App\Models\grp_classe_certif;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 //use phpDocumentor\Reflection\Types\Collection;
@@ -141,7 +142,33 @@ public function get_ecole()
     return groupe_classe::select('ecole')->distinct()->get();
 }
 
-
+public function getdisctinct()
+{   $arrayfiltre= [];
+    $depatement=groupe_classe::select('departement')->distinct()->get();
+  
+    foreach ($depatement as $dep) {
+      
+        $ecole=groupe_classe::select('ecole')
+        ->where('departement',  $dep['departement'])->distinct()->get();
+        foreach($ecole as $eco) {
+            $niveau=groupe_classe::select('niveau')
+            ->where('departement',  $dep['departement'])
+            ->where('ecole',  $eco['ecole'])
+            ->distinct()->get(); 
+            foreach($niveau as $niv)
+            {
+        $testarray= [];
+        $testarray['departement']=$dep['departement'];
+        $testarray['niveau']=$niv['niveau'];
+        $testarray['ecole']=$eco['ecole'];
+        array_push($arrayfiltre,$testarray);
+            }
+        }
+    
+    }
+    return $arrayfiltre; 
+    //return $ecole;
+}
     public function get_grp_bydepartement(Request $request)
     {
         return groupe_classe::select('departement')->distinct()->get();
@@ -176,4 +203,48 @@ public function get_ecole()
         return response()->json(array_values($test));
     }
 
+
+    public function get_grp_by_dep_niv_ecole(Request $data )
+    { $grp_classecertif = new grp_classe_certifController();
+        $dep= groupe_classe::where('departement',$data['departement'])
+            ->where('niveau',$data['niveau'])
+            ->where('ecole',$data['ecole'])->get();
+            foreach($dep as $g){
+               
+                $grp_classecertif->affecter_certif($g->id,$data['certif_id']
+            );
+                
+            }
+        return  response()->json('ok');
+    }
+    public function get_grpaff_disctinct($certif_id)
+    {
+        $id_grps=grp_classe_certif::select('grp_classe_id')
+        ->where('certif_id',$certif_id)->get();
+        $arrayfiltre= [];
+    $depatement=groupe_classe::select('departement')
+   ->whereIn('id',  $id_grps)->distinct()->get();
+    foreach ($depatement as $dep) {
+      
+        $ecole=groupe_classe::select('ecole')
+        ->where('departement',  $dep['departement'])
+        ->whereIn('id',  $id_grps)->distinct()->get();
+        foreach($ecole as $eco) {
+            $niveau=groupe_classe::select('niveau')
+            ->where('departement',  $dep['departement'])
+            ->where('ecole',  $eco['ecole'])
+            ->whereIn('id',  $id_grps)
+            ->distinct()->get(); 
+            foreach($niveau as $niv)
+            {
+        $testarray= [];
+        $testarray['departement']=$dep['departement'];
+        $testarray['niveau']=$niv['niveau'];
+        $testarray['ecole']=$eco['ecole'];
+        array_push($arrayfiltre,$testarray);
+            }
+        }
+    }
+    return $arrayfiltre; 
+}
 }

@@ -18,9 +18,8 @@ class localController extends Controller
      */
     public function index()
     {
-        $local= local::all();
+        $local = local::all();
         return response()->json($local);
-
     }
 
     /**
@@ -42,22 +41,18 @@ class localController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom'=>'required',
-            'capacite'=>'required',
-            'type'=>'required',
+            'nom' => 'required',
+            'capacite' => 'required',
+            'type' => 'required',
 
         ]);
-        $local_identique=local::where('nom', $request['nom'])->first();
-        if($local_identique==null)
-        {
+        $local_identique = local::where('nom', $request['nom'])->first();
+        if ($local_identique == null) {
             local::create($request->all());
             return response()->json("ok");
-        }
-        else
-        {
+        } else {
             return response()->json('no');
         }
-
     }
 
     /**
@@ -69,14 +64,14 @@ class localController extends Controller
     public function show($id)
     {
         try {
-            $local= local::findOrFail($id);
+            $local = local::findOrFail($id);
             return response()->json($local);
-
-        }
-        catch (ModelNotFoundException  $e) {
+        } catch (ModelNotFoundException  $e) {
             return $e->getMessage();
         }
     }
+
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -95,26 +90,20 @@ class localController extends Controller
      * @param  \App\Models\local  $local
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id )
+    public function update(Request $request, $id)
     {
         try {
             $local = local::findOrFail($id);
-            $local_identique=local::where('nom', $request->nom)->first();
-            if($local_identique==null or $local->nom==$request->nom)
-            {
+            $local_identique = local::where('nom', $request->nom)->first();
+            if ($local_identique == null or $local->nom == $request->nom) {
                 $local->update($request->all());
                 return response()->json($local);
-            }
-            else
-            {
+            } else {
                 return response()->json('no');
             }
-        }
-        catch (ModelNotFoundException  $e) {
+        } catch (ModelNotFoundException  $e) {
             return $e->getMessage();
         }
-
-
     }
 
     /**
@@ -127,8 +116,7 @@ class localController extends Controller
     {
         try {
             $local = local::findOrFail($id);
-        }
-        catch (ModelNotFoundException  $e) {
+        } catch (ModelNotFoundException  $e) {
             return $e->getMessage();
         }
         $local->delete();
@@ -137,15 +125,40 @@ class localController extends Controller
 
     public function import()
     {
-        try{
+        try {
             Excel::import(new localImport(),  request()->file('file'));
             return response()->json('ok');
+        } catch (QueryException $e) {
+            return $e->getMessage();
         }
-       catch (QueryException $e)
-       {
-           return $e->getMessage();
-       }
+    }
 
-
+    public function get_loc_bytype($type)
+    {
+        if ($type == 'théorique') {
+            return local::where('type', 'cours')->get();
+        } else {
+            return local::where('type', 'tp')->get();
+        }
+    }
+    public function getloc_langue_type($type, $l)
+    {
+        try {
+            if ($l == 'Anglais') {
+                if ($type == 'théorique') {
+                    return local::where('type', 'cours')->where('langue_ang', true)->get();
+                } else {
+                    return local::where('type', 'tp')->where('langue_ang', true)->get();
+                }
+            } else {
+                if ($type == 'théorique') {
+                    return local::where('type', 'cours')->get();
+                } else {
+                    return local::where('type', 'tp')->get();
+                }
+            }
+        } catch (ModelNotFoundException  $e) {
+            return $e->getMessage();
+        }
     }
 }

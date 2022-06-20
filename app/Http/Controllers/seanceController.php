@@ -40,10 +40,7 @@ class seanceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'datedeb'=>'required',
-            'datefin'=>'required',
-            'type'=>'required',
-            'groupe_formation_id'=>'required',
+
 
         ]);
         seance::create($request->all());
@@ -120,7 +117,8 @@ class seanceController extends Controller
     public function  find_bygrp_forma($id_grp_forma)
     {
         $seance = seance::where('groupe_formation_id', $id_grp_forma)->first();
-        return response()->json($seance);
+
+        return $seance;
 
     }
         public function  find_list_bygrp_forma(Request $request)

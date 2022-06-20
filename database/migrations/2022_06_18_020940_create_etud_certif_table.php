@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLocalsTable extends Migration
+class CreateEtudCertifTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateLocalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('locals', function (Blueprint $table) {
+        Schema::create('etud_certif', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->float('capacite');
-            $table->string('type');
-            $table->boolean('langue_ang');
+            $table->string('certif_id')->nullable();
+            $table->string('etud_id')->nullable();
+            $table->string('langue_certif')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateLocalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locals');
+        Schema::dropIfExists('etud_certif');
     }
 }

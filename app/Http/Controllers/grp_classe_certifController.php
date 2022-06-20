@@ -7,6 +7,11 @@ use App\Models\groupe_classe;
 use App\Models\grp_classe_certif;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+
+use Illuminate\Database\QueryException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\testImport;
+
 use phpDocumentor\Reflection\PseudoTypes\List_;
 
 class grp_classe_certifController extends Controller
@@ -118,12 +123,12 @@ class grp_classe_certifController extends Controller
         return response()->json('ok');
     }
 
-    public function affecter_certif( $id_grp_classe , $id_certif , Request $data )
+    public function affecter_certif( $id_grp_classe , $id_certif )
     {
         try {
             $grp_classeid_certifs=grp_classe_certif::select('certif_id')->where('grp_classe_id',$id_grp_classe)->get();
 
-         foreach ($grp_classeid_certifs as $item)
+        foreach ($grp_classeid_certifs as $item)
             {
                 if($item['certif_id']==$id_certif)
                 {
@@ -132,20 +137,44 @@ class grp_classe_certifController extends Controller
             }
             $grp_classe=groupe_classe::where('id',$id_grp_classe)->first();
             $certif=certification::where('id',$id_certif)->first();
-            $grp_classe->certifications()->attach($id_certif, ['semestre' => $data[0], 'nbheure' =>$data[1] ]);
-            return response()->json('ok');
-             }
+            $grp_classe->certifications()->attach($id_certif, ['semestre' =>null, 'nbheure' =>null ]);
+           // return response()->json('ok');
+    }
         catch (ModelNotFoundException  $e){
             return $e->getMessage();
         }
 
     }
 
-    public function get_all_certifs($grp_id)
+    public function get_all_certifs($grp_id,$idcertif)
     {
-          return grp_classe_certif::where('grp_classe_id',$grp_id)->get();
+          return grp_classe_certif::where('grp_classe_id',$grp_id)
+                                    ->where('certif_id',$idcertif)->get();
 
     }
 
+public function getgrp_bycertif_id($certif_id)
+{
+    $grp= grp_classe_certif::where('certif_id',$certif_id)->get();
+    return response()->json($grp);
+
+}
+
+public function get_grp_certif_distinct()
+ {
+
+ }
+
+ public function import()
+ {
+     try {
+         Excel::import(new testImport(),  request()->file('file'));
+         return response()->json('ok');
+     }
+     catch (QueryException $e)
+     {
+         return $e->getMessage();
+     }
+ }
 
 }

@@ -16,17 +16,20 @@ class CreateGroupeCertificationsTable extends Migration
         Schema::create('groupe_certifications', function (Blueprint $table) {
             $table->id();
             $table->string('nom_groupe_certif');
-            $table->date('date');
-            $table->dateTime('heuredeb');
-            $table->dateTime('heurefin');
+            $table->string('date')->nullable();
+            $table->string('heuredeb')->nullable();
+            $table->string('heurefin')->nullable();
+            $table->string('langue');
+            $table->string('cours');
+            $table->integer('effectif');
             $table->unsignedBigInteger('certification_id')->nullable();
             $table->foreign('certification_id')->references('id')->on('certifications');
             $table->unsignedBigInteger('local_id')->nullable();
             $table->foreign('local_id')->references('id')->on('locals');
             $table->unsignedBigInteger('surv1_id')->nullable();
-            $table->foreign('surv1_id')->references('id')->on('surveillants');
+            $table->foreign('surv1_id')->references('id')->on('formateurs');
             $table->unsignedBigInteger('surv2_id')->nullable();
-            $table->foreign('surv2_id')->references('id')->on('surveillants');
+            $table->foreign('surv2_id')->references('id')->on('formateurs');
             $table->timestamps();
         });
     }

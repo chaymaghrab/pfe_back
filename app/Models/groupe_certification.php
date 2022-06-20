@@ -13,6 +13,8 @@ class groupe_certification extends Model
         'date',
         'heuredeb',
         'heurefin',
+        'nom_groupe_certif','certification_id','local_id','surv1_id','surv2_id','cours','langue','effectif'
+
     ];
 
     /************* les relations ********************/
@@ -27,11 +29,11 @@ class groupe_certification extends Model
     }
     public function surveilant1()
     {
-        return $this->belongsTo(surveillant::class,'surv1_id');
+        return $this->belongsTo(formateur::class,'surv1_id');
     }
     public function surveilant2()
     {
-        return $this->belongsTo(surveillant::class,'surv2_id');
+        return $this->belongsTo(formateur::class,'surv2_id');
     }
     public function etudiants()
     {

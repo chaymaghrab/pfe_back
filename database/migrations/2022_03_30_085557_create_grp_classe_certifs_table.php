@@ -15,8 +15,8 @@ class CreateGrpClasseCertifsTable extends Migration
     {
         Schema::create('grp_classe_certifs', function (Blueprint $table) {
             $table->id();
-            $table->integer('nbheure');
-            $table->integer('semestre');
+            $table->integer('nbheure')->nullable();
+            $table->integer('semestre')->nullable();
             $table->unsignedBigInteger('certif_id')->nullable();
             $table->foreign('certif_id')->references('id')->on('certifications')->onDelete('cascade');
             $table->unsignedBigInteger('grp_classe_id')->nullable();
